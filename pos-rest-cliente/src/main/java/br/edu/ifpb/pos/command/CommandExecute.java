@@ -52,24 +52,36 @@ public class CommandExecute implements Runnable {
             Representation representation = new StringRepresentation((CharSequence) line.getValue("--insert"), MediaType.APPLICATION_JSON);
             ClientResource clientResource;
             if (line.getValue("--type").equals(TYPE_PERSON)){
-                clientResource = new ClientResource(URL + "/persons");
+                clientResource = new ClientResource(URL + "/person");
             } else {
-                clientResource = new ClientResource(URL + "/users");
+                clientResource = new ClientResource(URL + "/user");
             }
-            clientResource.post(representation);
-            System.out.println("Dados inseridos com sucesso");
+            try {
+                clientResource.post(representation).write(System.out);
+                System.out.println("");
+            } catch (IOException ex) {
+                Logger.getLogger(CommandExecute.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         if (line.hasOption("--update")) {
-            Representation representation = new StringRepresentation((CharSequence) line.getValue("--update"), MediaType.APPLICATION_JSON);
+            String entity=(String)line.getValue("--update");
+            Representation representation = new StringRepresentation(entity, MediaType.APPLICATION_JSON);
             ClientResource clientResource;
+            Gson gson=new Gson();
             if (line.getValue("--type").equals(TYPE_PERSON)){
-                clientResource = new ClientResource(URL + "/persons");
+                Key key=gson.fromJson(entity, Key.class);
+                clientResource = new ClientResource(URL + "/person/"+key.getKey());
             } else {
-                clientResource = new ClientResource(URL + "/users");
+                Key key=gson.fromJson(entity, Key.class);
+                clientResource = new ClientResource(URL + "/user/"+key.getKey());
             }
-            clientResource.put(representation);
-             System.out.println("Dados inseridos com sucesso");
+            try {
+                clientResource.put(representation).write(System.out);
+                System.out.println("");
+            } catch (IOException ex) {
+                Logger.getLogger(CommandExecute.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         if (line.hasOption("--delete")) {
@@ -77,22 +89,26 @@ public class CommandExecute implements Runnable {
             String key=getKey(line.getValue("--delete").toString());
             
             if (line.getValue("--type").equals(TYPE_PERSON)){
-                clientResource = new ClientResource(URL + "/persons/"+key);
+                clientResource = new ClientResource(URL + "/person/"+key);
             } else {
-                clientResource = new ClientResource(URL + "/users/"+key);
+                clientResource = new ClientResource(URL + "/user/"+key);
 
             }
-            clientResource.delete();
-             System.out.println("Dados inseridos com sucesso");
+            try {
+                clientResource.delete().write(System.out);
+                System.out.println("");
+            } catch (IOException ex) {
+                Logger.getLogger(CommandExecute.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         if (line.hasOption("--select")) {
             ClientResource clientResource;
             String key=getKey(line.getValue("--select").toString());
             if (line.getValue("--type").equals(TYPE_PERSON)){
-                clientResource = new ClientResource(URL + "/persons/"+key);
+                clientResource = new ClientResource(URL + "/person/"+key);
             } else {
-                clientResource = new ClientResource(URL + "/users/"+key);
+                clientResource = new ClientResource(URL + "/user/"+key);
             }
             Representation representation=clientResource.get();
             try {

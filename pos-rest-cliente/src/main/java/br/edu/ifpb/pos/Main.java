@@ -31,7 +31,6 @@ public class Main {
             CommandExecute execute=new CommandExecute(line,options);
             execute.run();
         } catch (OptionException ex) {
-            ex.printStackTrace();
             System.out.println(ex.getMessage());
         } catch(ResourceException ex){
             System.out.println("ERROR: "+ex.getMessage() );

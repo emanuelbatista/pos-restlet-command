@@ -21,10 +21,10 @@ public class Main {
         component.getServers().add(Protocol.HTTP, 8080);
         //
         Router router = new Router();
-        router.attach("/persons", PersonResources.class);
-        router.attach("/persons/{id}", PersonResources.class);
-        router.attach("/users", UserResources.class);
-        router.attach("/users/{id}", UserResources.class);
+        router.attach("/person", PersonResources.class);
+        router.attach("/person/{id}", PersonResources.class);
+        router.attach("/user", UserResources.class);
+        router.attach("/user/{id}", UserResources.class);
         //
         Application application = new Application();
         application.setInboundRoot(router);

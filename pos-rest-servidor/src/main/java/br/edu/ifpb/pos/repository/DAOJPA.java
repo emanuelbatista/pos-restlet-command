@@ -11,7 +11,7 @@ import javax.persistence.Query;
  * @author job
  * @param <T>
  */
-public class DAOJPA<T>{
+public class DAOJPA<T> {
 
     protected EntityManager entityManager;
 
@@ -21,10 +21,9 @@ public class DAOJPA<T>{
 
     public DAOJPA(String unidadePersistencia) {
         entityManager = Persistence.createEntityManagerFactory(unidadePersistencia).createEntityManager();
-
     }
 
-    public boolean salvar(T obj) {
+    public boolean salvar(T obj) throws Exception {
         EntityTransaction transacao = entityManager.getTransaction();
 
         try {
@@ -36,12 +35,12 @@ public class DAOJPA<T>{
             if (transacao.isActive()) {
                 transacao.rollback();
             }
-            return false;
+            throw new Exception(ex);
         }
 
     }
 
-    public boolean atualizar(T obj) {
+    public boolean atualizar(T obj) throws Exception {
         EntityTransaction transacao = entityManager.getTransaction();
 
         try {
@@ -53,11 +52,12 @@ public class DAOJPA<T>{
             if (transacao.isActive()) {
                 transacao.rollback();
             }
-            return false;
+
+            throw new Exception(ex);
         }
     }
 
-    public boolean excluir(T obj) {
+    public boolean excluir(T obj) throws Exception {
         EntityTransaction transacao = entityManager.getTransaction();
 
         try {
@@ -69,7 +69,9 @@ public class DAOJPA<T>{
             if (transacao.isActive()) {
                 transacao.rollback();
             }
-            return false;
+
+            throw new Exception(ex);
+
         }
     }
 
@@ -100,7 +102,5 @@ public class DAOJPA<T>{
     public EntityManager getEntityManager() {
         return entityManager;
     }
-    
-    
 
 }

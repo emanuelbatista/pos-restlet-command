@@ -40,6 +40,7 @@ public class Commands {
         typeEntity.add("json_person");
         typeEntity.add("json_user");
         EnumValidator enumValidator = new EnumValidator(typeEntity);
+        
         Option type = obuilder.
                 withLongName("type").
                 withDescription("Tipo de Objeto a ser salvo").
@@ -67,19 +68,19 @@ public class Commands {
         //
         Option insert = obuilder
                 .withLongName("insert")
-                .withDescription("Insere um novo objeto")
+                .withDescription("Insere um novo objeto em formarto JSON de acordo com os atributos da entidade")
                 .withChildren(groupType)
                 .withArgument(argument)
                 .create();
         Option delete = obuilder
                 .withLongName("delete")
-                .withDescription("Exclui um objeto")
+                .withDescription("Exclui um objeto passando a chave da entidade nesse formato: {\"key\": value}")
                 .withArgument(argument)
                 .withChildren(groupType)
                 .create();
         Option update = obuilder
                 .withLongName("update")
-                .withDescription("Atualiza um objeto")
+                .withDescription("Atualiza um objeto em formarto JSON de acordo com esse formato: {\"key\": value, outros parametros...}")
                 .withArgument(argument)
                 .withChildren(groupType)
                 .create();
@@ -93,7 +94,7 @@ public class Commands {
         
         Option select=obuilder
                 .withLongName("select")
-                .withDescription("Visualiza um objeto")
+                .withDescription("Visualiza um objeto passando a chave da entidade nesse formato: {\"key\": value}")
                 .withArgument(argument)
                 .withChildren(groupType)
                 .create();
